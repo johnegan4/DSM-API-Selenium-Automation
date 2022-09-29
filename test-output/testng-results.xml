@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" ignored="0" total="1" passed="1">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Suite" duration-ms="14081" started-at="2021-08-10T14:18:09 CDT" finished-at="2021-08-10T14:18:24 CDT">
+    <groups>
+    </groups>
+    <test name="Test" duration-ms="14081" started-at="2021-08-10T14:18:09 CDT" finished-at="2021-08-10T14:18:24 CDT">
+      <class name="testcases.APIDSMTest">
+        <test-method status="PASS" signature="beforeTest(org.testng.ITestContext)[pri:0, instance:testcases.APIDSMTest@4b553d26]" name="beforeTest" is-config="true" duration-ms="9555" started-at="2021-08-10T14:18:09 CDT" finished-at="2021-08-10T14:18:19 CDT">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[org.testng.TestRunner@4b4dd216]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeTest -->
+        <test-method status="PASS" signature="TestCase17_AdminAccountRequests()[pri:0, instance:testcases.APIDSMTest@4b553d26]" name="TestCase17_AdminAccountRequests" duration-ms="3816" started-at="2021-08-10T14:18:19 CDT" finished-at="2021-08-10T14:18:23 CDT">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- TestCase17_AdminAccountRequests -->
+        <test-method status="PASS" signature="afterTest()[pri:0, instance:testcases.APIDSMTest@4b553d26]" name="afterTest" is-config="true" duration-ms="678" started-at="2021-08-10T14:18:23 CDT" finished-at="2021-08-10T14:18:24 CDT">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterTest -->
+      </class> <!-- testcases.APIDSMTest -->
+    </test> <!-- Test -->
+  </suite> <!-- Suite -->
+</testng-results>

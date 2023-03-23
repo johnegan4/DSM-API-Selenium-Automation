@@ -29,8 +29,8 @@ public class UserSettings extends LoadDriver {
 //	private static WebElement application_list_Link;
 	
  	@FindBy(how = How.XPATH, using = "//*[@id=\"tabs\"]/ul/li[2]/a")
-	private static WebElement Account_edit_Link;
-			
+	private static WebElement Account_edit_Link; 	
+ 	
 	@FindBy(how = How.XPATH, using = "//input[@name='first_name']")
 	private static WebElement first_name;
 	
@@ -61,14 +61,27 @@ public class UserSettings extends LoadDriver {
 	@FindBy(how = How.XPATH, using = "//input[@name='location']")
 	private static WebElement location;
 	
-	@FindBy(how = How.XPATH, using = "//select[@id='facility_select']")
+
+	//*[@id="facility_select"]
+	
+	
+	@FindBy(how = How.XPATH, using = "//*[@id=\"facility_select\"]")
 	private static WebElement facility_select;
+		
+//	@FindBy(how = How.XPATH, using = "//*[@id=\"chosen-search-input\"]")
+//	private static WebElement SettingsFacility;
+	
+//	@FindBy(how = How.XPATH, using = "//*[@id='chosen-search-input']")
+//	private static WebElement SettingsFacility;
+	
+	
+	
+ 
 	
 	@FindBy(how = How.XPATH, using = "//*[@id=\"accountForm\"]/div[2]/input")
-	private static WebElement Save;
+	private static WebElement save_button;
+
 	
-
-
 	// Test User Settings form
 		public static void UserSettings_validation(String excelFilePath, String sheetName) throws Exception {
 			System.out.println("***************** User Settings Test_Validation- in validation *****************");
@@ -79,29 +92,26 @@ public class UserSettings extends LoadDriver {
 				//this will wait for page to load
 				commonpageActions.waitForPageToLoad();
 				
-				//this method is for to click any link- in this case it is clicking on User Settings link 
-		   		commonpageActions.click(driver, UserSettings_Link , 360);
-			   				
-	   				//this method is for to click any link- in this case it is clicking on User Settings link
-//					  commonpageActions.click(driver, application_list_Link , 360);			  
+					//this method is for to click any link- in this case it is clicking on User Settings link 
+					commonpageActions.click(driver, UserSettings_Link , 360);			  
 					
-						//this method is for to click any link- in this case it is clicking on User Account link
-						commonpageActions.click(driver, Account_edit_Link , 360);					
+					//this method is for to click any link- in this case it is clicking on User Account link
+					commonpageActions.click(driver, Account_edit_Link , 360);					
 					
-							//this method is for to read the data from excel sheet and enter data in a User Settings form 
-							commonpageActions.ReportUserSettings(excelFilePath, sheetName, first_name, middle_name, 
+					//this method is for to read the data from excel sheet and enter data in a User Settings form 
+					commonpageActions.UserSettings(excelFilePath, sheetName, first_name, middle_name, 
 								last_name, ext_mail, title, department, organization, telephone, mobile, 
 								location, facility_select );
-						  
-								//this method is for to click any button in this case it is clicking on Save button
-								commonpageActions.click(driver, Save , 360);
-																
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@				
-  TakeScreenShots.TakesScreenshot(Save);
-							
-//										Assert.assertEquals("106220",event_ID);
 					
-											System.out.println ("~~~~~~~~~~~~~~~~  User Settings_test is complete~~~~~~~~~~~~~~~~~");			
-			}
+					//this method is for to click any link- in this case it is clicking on Save button
+					commonpageActions.click(driver, save_button , 360);
+		   					   			
+			        
+					TakeScreenShots.TakesScreenshot(save_button);	
+					
+										  
+					System.out.println ("~~~~~~~~~~~~~~~~  User Settings_test is complete~~~~~~~~~~~~~~~~~");			
+		}
 	}
-	
+//this method is for to click any link- in this case it is clicking on User Settings link
+//commonpageActions.click(driver, application_list_Link , 360);

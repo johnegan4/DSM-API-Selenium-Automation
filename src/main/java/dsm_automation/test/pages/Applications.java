@@ -24,6 +24,7 @@ public class Applications extends LoadDriver {
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Application')]")
 	private static WebElement Application_Link;
 	
+	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Active')]")
 	private static WebElement active_link;
 	
@@ -33,8 +34,28 @@ public class Applications extends LoadDriver {
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Denied')]")
 	private static WebElement denied_link;
 	
-	@FindBy(how = How.XPATH, using = "//input[@id='Search']")
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='keyForm10056']/div/a[2]")
+	private static WebElement Edit_button;
+ 
+		
+	@FindBy(how = How.XPATH, using = "//input[@id='admin_api_permission']")
+	private static WebElement admin_api_permission;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='direct_api_permission']")
+	private static WebElement direct_api_permission;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='disclosure_api_permission']")
+	private static WebElement disclosure_api_permission;
+	 
+	
+	@FindBy(how = How.XPATH, using = "//*[@id=\"appForm\"]/div[2]/input")
+	private static WebElement Save_button;
+		 
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='active_application_table_filter']")
 	private static WebElement active_application_table_filter;
+	
 	
 	
 	// Test Applications form
@@ -50,32 +71,31 @@ public class Applications extends LoadDriver {
 			//this method is for to click any link- in this case it is clicking on Applications link
 			commonpageActions.click(driver, Application_Link , 360);
 			 	
-				//this method is for to click any link- in this case it is clicking on Denied link
-//					commonpageActions.click(driver, denied_link, 360);
+				        //this method is for to click any link- in this case it is clicking on Denied link
+   			     	   	commonpageActions.click(driver, denied_link, 360);
 		
 						//this method is for to click any link- in this case it is clicking on Pending Approval link
-//						commonpageActions.click(driver, pending_link , 360);
+						commonpageActions.click(driver, pending_link , 360);
 		
-							//this method is for to click any link- in this case it is clicking on Active link
-							commonpageActions.click(driver, active_link , 360);
-							
-							
-							//this method is for to read the data from excel sheet and enter data in a Applications form 
-							commonpageActions.Applications(excelFilePath, sheetName, 
-									active_application_table_filter );
-							
-							
-							
-							
-			 			
-							TakeScreenShots.TakesScreenshot(active_link);		
-	
-				
-				
-                              
-				System.out.println ("~~~~~~~~~~~~~~~~Applications_test is complete~~~~~~~~~~~~~~~~~");			
+						//this method is for to click any link- in this case it is clicking on Active link
+						commonpageActions.click(driver, active_link , 360);
+						
+						//this method is for to click any link- in this case it is clicking on Edit link
+						commonpageActions.click(driver, Edit_button , 360);
+						
+						//this method is for to click any link- in this case it is clicking on admin_api_permission link
+						commonpageActions.click(driver, admin_api_permission , 360);
+						//this method is for to click any link- in this case it is clicking on admin_api_permission link
+						commonpageActions.click(driver, direct_api_permission , 360);
+						//this method is for to click any link- in this case it is clicking on admin_api_permission link
+						commonpageActions.click(driver, disclosure_api_permission , 360);
+						
+						//this method is for to click any link- in this case it is clicking on Save button
+						commonpageActions.click(driver, Save_button , 360);
+																				 			
+						TakeScreenShots.TakesScreenshot(Save_button);		
+	                            
+						System.out.println ("~~~~~~~~~~~~~~~~Applications_test is complete~~~~~~~~~~~~~~~~~");			
 			
 				}
-	
-	}
-
+		}

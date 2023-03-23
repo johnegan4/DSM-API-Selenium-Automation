@@ -5,7 +5,7 @@
     <classes>
       <class name="testcases.APIDSMTest">
         <methods>
-          <include name="TestCase01_ReportEvents"/>
+          <include name="TestCase13_AdminManageAccounts"/>
           <include name="beforeTest"/>
           <include name="afterTest"/>
         </methods>

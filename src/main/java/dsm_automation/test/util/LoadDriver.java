@@ -53,7 +53,10 @@ public class LoadDriver {
 			options.addArguments("--disable-dev-shm-usage"); // overcome limited resource problems
 			options.addArguments("--no-sandbox"); // Bypass OS security model
 			options.addArguments("--remote-debugging-port=9222");
+			options.addArguments("ignore-certificate-errors");
+			options.addArguments("test-type");
 			options.setExperimentalOption("useAutomationExtension", false);
+			
 
 			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();

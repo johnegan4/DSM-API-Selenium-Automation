@@ -22,9 +22,34 @@ public class UserSettingsAppList extends LoadDriver {
 		PageFactory.initElements(driver, this);
 	}
 	
+	@FindBy(how = How.XPATH, using = "//a[contains(text(),'User Settings')]")
+	private static WebElement UserSettings_Link;
+	
 	@FindBy(how = How.XPATH, using = "/html/body/div[1]/div[2]/div[1]/ul/li[5]/a")
-	private static WebElement application_list_Link;	
+	private static WebElement application_list_Link;
+	
+	
+	@FindBy(how = How.XPATH, using = "//*[@id=\"application_table\"]/tbody/tr[1]/td[2]/div/a")
+	private static WebElement Edit_button;
+		 
+	
 		
+	@FindBy(how = How.XPATH, using = "//input[@id=\'ws41681\']")
+	private static WebElement manage_checkbox;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id=\'ws41682\']")
+	private static WebElement retrieve_checkbox;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id=\'ws41683\']")
+	private static WebElement send_checkbox;
+	
+	
+		
+	@FindBy(how = How.XPATH, using = "//*[@id=\"appForm\"]/div[2]/input")
+	private static WebElement save_button;
+	
+	
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='application_table_filter']")
 	private static WebElement application_table_filter;
 	
@@ -45,21 +70,32 @@ public class UserSettingsAppList extends LoadDriver {
 				//this will wait for page to load
 				commonpageActions.waitForPageToLoad();
 			   				
-	   				//this method is for to click any link- in this case it is clicking on User Settings App List link
-					  commonpageActions.click(driver, application_list_Link , 360);
+					//this method is for to click any link- in this case it is clicking on User Settings link 
+		   			commonpageActions.click(driver, UserSettings_Link , 360);
+		   			
+		   		    //this method is for to click any link- in this case it is clicking on Edit link
+					commonpageActions.click(driver, Edit_button , 360);
 					
-						 //this method is for to click any button in this case it is clicking on Find Application Search Box
-							commonpageActions.click(driver, application_table_filter , 360);
-							
-								//this method is for to read the data from excel sheet and enter data in a User Settings App List form 
-								commonpageActions.UserSettingsAppList(excelFilePath, sheetName, app_name );
-							
- 				
-  TakeScreenShots.TakesScreenshot(app_name);
-							  
-//										Assert.assertEquals("VLER Direct API",VLER Direct API);
-								
-											System.out.println ("~~~~~~~~~~~~~~~~  User Settings App List_test is complete~~~~~~~~~~~~~~~~~");			
-				
-	 }
-  }
+					//this method is for to click any link- in this case it is clicking on Manage Check box link
+					commonpageActions.click(driver, manage_checkbox , 360);
+					//this method is for to click any link- in this case it is clicking on Manage Check box link
+					commonpageActions.click(driver, retrieve_checkbox , 360);
+					//this method is for to click any link- in this case it is clicking on Manage Check box link
+					commonpageActions.click(driver, send_checkbox , 360);
+					
+					//this method is for to click any link- in this case it is clicking on Save button
+					commonpageActions.click(driver, save_button , 360);
+		   					   			
+			        
+					TakeScreenShots.TakesScreenshot(save_button);		 
+					  
+					System.out.println ("~~~~~~~~~~~~~~~~  User Settings App List_test is complete~~~~~~~~~~~~~~~~~");		
+					  
+   }
+        }
+//this method is for to click any button in this case it is clicking on Find Application Search Box
+//commonpageActions.click(driver, application_table_filter , 360);
+//this method is for to click any link- in this case it is clicking on User Settings App List link
+//commonpageActions.click(driver, application_list_Link , 360);
+
+

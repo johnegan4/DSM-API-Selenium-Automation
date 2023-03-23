@@ -30,28 +30,28 @@ public class ReportMail extends LoadDriver {
 	@FindBy(how = How.XPATH, using = "//select[@id='successful']")
 	private static WebElement successful;
 	
-	@FindBy(how = How.XPATH, using = "//input[@name='id']")
+	@FindBy(how = How.XPATH, using = "//*[@id='id']")
 	private static WebElement id;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='mdn']")
+	@FindBy(how = How.XPATH, using = "//select[@id='mdn']")
 	private static WebElement mdn;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='bound']")
+	@FindBy(how = How.XPATH, using = "//select[@id='bound']")
 	private static WebElement bound;
 
-	@FindBy(how = How.XPATH, using = "//input[@name='sender']")
+	@FindBy(how = How.XPATH, using = "//*[@id='sender']")
 	private static WebElement sender;
 	
-	@FindBy(how = How.XPATH, using = "//input[@name='recipient']")
+	@FindBy(how = How.XPATH, using = "//*[@id='recipient']")
 	private static WebElement recipient;
 	
-	@FindBy(how = How.XPATH, using = "//input[@name='file_size']")
+	@FindBy(how = How.XPATH, using = "//*[@id='file_size']")
 	private static WebElement file_size;
 	
-	@FindBy(how = How.XPATH, using = "//input[@id='attachment_type']")
+	@FindBy(how = How.XPATH, using = "//*[@id='attachment_type']")
 	private static WebElement attachment_type;
 
-	@FindBy(how = How.XPATH, using = "//select[@name='protected_data']")
+	@FindBy(how = How.XPATH, using = "//select[@id='protected_data']")
 	private static WebElement protected_data;
 
 	@FindBy(how = How.XPATH, using = "//input[@name='start_date']")
@@ -77,36 +77,22 @@ public class ReportMail extends LoadDriver {
 		
 		PageFactory.initElements(driver, commonpageActions.class);
 		
-			//this will wait for page to load
-			commonpageActions.waitForPageToLoad();
+		//this will wait for page to load
+		commonpageActions.waitForPageToLoad();
 		
-				//this method is for to click any link- in this case it is clicking on reports link 
-				commonpageActions.click(driver, Reports_Link , 360);
+		//this method is for to click any link- in this case it is clicking on reports link 
+		commonpageActions.click(driver, Reports_Link , 360);
    		
-					//this method is for to click any link- in this case it is clicking on Mail link
-					commonpageActions.click(driver, Mail_Link , 360);
+		//this method is for to click any link- in this case it is clicking on Mail link
+		commonpageActions.click(driver, Mail_Link , 360);
 								
-						//this method is for to read the data from excel sheet and enter data in a event form 
-						commonpageActions.ReportMail(excelFilePath, sheetName, successful, id, mdn, bound, 
-							sender, recipient, file_size, attachment_type, protected_data, start_date, end_date );
-					
-							//this method is for to click any button in this case it is clicking on Filter button
-							commonpageActions.click(driver, filter_button , 360);
+		//this method is for to read the data from excel sheet and enter data in a mail form 
+		commonpageActions.ReportMail(excelFilePath, sheetName, successful, id, mdn, bound, sender, recipient, file_size, 
+				attachment_type, protected_data, start_date, end_date );
 							
-								//this method is for to click any button in this case it is clicking on Save Report button
-//								commonpageActions.click(driver, details_link , 360);
-								
-									//this method is for to click any button in this case it is clicking on Clear button
-//									commonpageActions.click(driver, clear_button , 360);
+		System.out.println ("~~~~~~~~~~~~~~~~Reports Mail_test is complete~~~~~~~~~~~~~~~~~");			
 			
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@				
-  TakeScreenShots.TakesScreenshot(filter_button);
-		  
-//											Assert.assertEquals("106220",event_ID);
-					
-					
-				
-												System.out.println ("~~~~~~~~~~~~~~~~Reports Mail_test is complete~~~~~~~~~~~~~~~~~");			
-			
-				}
+   }
 		}
+//this method is for to click any button in this case it is clicking on Save Report button
+//commonpageActions.click(driver, details_link , 360);

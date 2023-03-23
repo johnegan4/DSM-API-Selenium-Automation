@@ -53,8 +53,7 @@ public class OnboardingRequest extends LoadDriver {
 	
 //	@FindBy(how = How.XPATH, using = "//*[@id='dpii_api_token']")
 //	private static WebElement dpii_api_token_button;
-	
-	
+		
 	
 	
 	// Test Onboarding Request form
@@ -67,23 +66,21 @@ public class OnboardingRequest extends LoadDriver {
 		//this will wait for page to load
 		commonpageActions.waitForPageToLoad();
 		
-		//this method is for to click any link- in this case it is clicking on Onboarding link 
-   		commonpageActions.click(driver, Onboarding_Link , 360);
+				//this method is for to click any link- in this case it is clicking on Onboarding link 
+				commonpageActions.click(driver, Onboarding_Link , 360);
    		
    				//this method is for to click any link- in this case it is clicking on Request Application Access link
 				commonpageActions.click(driver, RequestApplicationAccess_Link , 360);
 								
-					//this method is for to read the data from excel sheet and enter data in a Onboarding Request form 
-					commonpageActions.OnboardingRequest(excelFilePath, sheetName, app_name, app_url, app_desc, app_just, app_poc_name, app_poc_email, app_poc_phone );
+				//this method is for to read the data from excel sheet and enter data in a Onboarding Request form 
+				commonpageActions.OnboardingRequest(excelFilePath, sheetName, app_name, app_url, app_desc, app_just, app_poc_name, app_poc_email, app_poc_phone );
 									
-						//this method is for to click any button in this case it is clicking on Save button
-						commonpageActions.click(driver, Save , 360);
+				//this method is for to click any button in this case it is clicking on Save button
+				commonpageActions.click(driver, Save , 360);
 						
-							TakeScreenShots.TakesScreenshot(Save);				
+				TakeScreenShots.TakesScreenshot(Save);				
 			  
-	//						Assert.assertEquals("106220",event_ID1);
+				System.out.println ("~~~~~~~~~~~~~~~~Onboarding Request_test is complete~~~~~~~~~~~~~~~~~");			
 			
-								System.out.println ("~~~~~~~~~~~~~~~~Onboarding Request_test is complete~~~~~~~~~~~~~~~~~");			
-			
-				}
+   }
 		}

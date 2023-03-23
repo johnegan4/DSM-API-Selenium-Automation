@@ -21,16 +21,16 @@ public class AdminApplicationRequests extends LoadDriver {
 		PageFactory.initElements(driver, this);
 	}
 
-//	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administration')]")
-//	private static WebElement Administration_Link;
-	
-	@FindBy(how = How.XPATH, using = "/html/body/div[1]/div[2]/div[1]/ul/li[4]/ul/li[1]/a")
+	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administration')]")
 	private static WebElement Administration_Link;
+	
+//	@FindBy(how = How.XPATH, using = "/html/body/div[1]/div[2]/div[1]/ul/li[4]/ul/li[1]/a")
+//	private static WebElement Administration_Link;
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Application Request')]")
 	private static WebElement requests_link;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id=\"tabs\"]/ul/li[2]")
+	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Approved')]")
 	private static WebElement approved_link;
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Pending Approval')]")
@@ -54,28 +54,29 @@ public class AdminApplicationRequests extends LoadDriver {
 		//this will wait for page to load
 		commonpageActions.waitForPageToLoad();
 		
-		
-		//this method is for to click any link- in this case it is clicking on Administration link
-		commonpageActions.click(driver, Administration_Link , 360);
-			 	
-	//			//this method is for to click any link- in this case it is clicking on Requests link
-	//			commonpageActions.click(driver, requests_link , 360);
-	//		 	
-	//					//this method is for to click any link- in this case it is clicking on Pending link
-	//					commonpageActions.click(driver, pending_link , 360);		
-				
-						//this method is for to click any link- in this case it is clicking on Approved link
-						commonpageActions.click(driver, approved_link , 360);
+		//this method is for to click any link- in this case it is mouseoverelement on Administration link
+		//		commonpageActions.mouseOverElement(Administration_Link);
+				//this method is for to click any link- in this case it is click on Administration link
+				commonpageActions.click(driver, Administration_Link, 300);
+								
+					//this method is for to click any link- in this case it is clicking on Approved link
+					commonpageActions.click(driver, approved_link , 360);
 						
-	//					//this method is for to click any link- in this case it is clicking on Denied link
-	//					commonpageActions.click(driver, denied_link, 360);
-				
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@			
-  TakeScreenShots.TakesScreenshot(approved_link);
-				
-                              
-				System.out.println ("~~~~~~~~~~~~~~~~AdminApplicationRequests_test is complete~~~~~~~~~~~~~~~~~");			
+			TakeScreenShots.TakesScreenshot(approved_link);
+				                              
+			System.out.println ("~~~~~~~~~~~~~~~~AdminApplicationRequests_test is complete~~~~~~~~~~~~~~~~~");			
 			
-				}
-	
-	}
+			}
+		}
+
+//```````````````````````Other Methods````````````````````````````````````````````````````````````````````````````````````````````````````
+
+//this method is for to click any link- in this case it is clicking on Requests link
+//commonpageActions.click(driver, requests_link , 360);
+
+//this method is for to click any link- in this case it is clicking on Pending link
+//commonpageActions.click(driver, pending_link , 360);		
+
+//this method is for to click any link- in this case it is clicking on Denied link
+//commonpageActions.click(driver, denied_link, 360);
+

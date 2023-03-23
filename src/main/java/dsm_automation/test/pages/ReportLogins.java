@@ -52,7 +52,7 @@ public class ReportLogins extends LoadDriver {
 	private static WebElement start_date;
 	
 	@FindBy(how = How.XPATH, using = "//input[@name='end_date']")
-	private static WebElement end_date;	
+	private static WebElement end_date;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='filter_button']")
 	private static WebElement filter_button;
@@ -77,29 +77,13 @@ public class ReportLogins extends LoadDriver {
 				//this method is for to click any link- in this case it is clicking on Reports link 
 				commonpageActions.click(driver, Reports_Link , 360);
    		
-					//this method is for to click any link- in this case it is clicking on Logins link
-					// NOTE---> LOGINS LINK TAKES 3 MINUTES TO LOAD PAGE
-					commonpageActions.click(driver, Logins_Link , 360);
+				//this method is for to click any link- in this case it is clicking on Logins link
+				// NOTE---> LOGINS LINK TAKES 3 MINUTES TO LOAD PAGE
+				commonpageActions.click(driver, Logins_Link , 360);
 								
-						//this method is for to read the data from excel sheet and enter data in a Logins form 
-						commonpageActions.ReportLogins(excelFilePath, sheetName, successful, id, username, session_id, ip_address, 
-							message, org_id, start_date, end_date );
-					
-							//this method is for to click any button in this case it is clicking on Filter button
-							commonpageActions.click(driver, filter_button , 360);
-							
-								//this method is for to click any button in this case it is clicking on Save Report button
-//								commonpageActions.click(driver, details_link , 360);
-								
-//									//this method is for to click any button in this case it is clicking on Clear button
-//									commonpageActions.click(driver, clear_button , 360);									
-									
-  TakeScreenShots.TakesScreenshot(filter_button);
-		  
-//												Assert.assertEquals("106220",event_ID);
-					
-				
-				System.out.println ("~~~~~~~~~~~~~~~~Reports Logins_test is complete~~~~~~~~~~~~~~~~~");			
-			
-				}
-		}
+				//this method is for to read the data from excel sheet and enter data in a Logins form 
+				commonpageActions.ReportLogins(excelFilePath, sheetName, successful, id, username, session_id, ip_address, message, org_id, start_date, end_date );
+										
+				System.out.println ("~~~~~~~~~~~~~~~~Reports Logins_test is complete~~~~~~~~~~~~~~~~~");
+	}				
+		 }

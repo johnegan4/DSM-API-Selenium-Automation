@@ -47,42 +47,29 @@ public class ReportPointsofOrigin extends LoadDriver {
 	
 	
 
-	// Test Report PointsofOrigin form
+	// Test Report Points of Origin form
 	public static void ReportPointsofOrigin_validation(String excelFilePath, String sheetName) throws Exception {
 		System.out.println("***************** Points of Origin Test_Validation- in validation *****************");
 		Thread.sleep(200);
 		
 		PageFactory.initElements(driver, commonpageActions.class);
 		
-			//this will wait for page to load
-			commonpageActions.waitForPageToLoad();
+		//this will wait for page to load
+		commonpageActions.waitForPageToLoad();
+		System.out.println("Reports_Link *->"+Reports_Link);
 		
-				//this method is for to click any link- in this case it is clicking on reports link 
-				commonpageActions.click(driver, Reports_Link , 360);
+		
+		//this method is for to click any link- in this case it is clicking on reports link 
+		commonpageActions.click(driver, Reports_Link , 360);
    		
-					//this method is for to click any link- in this case it is clicking on PointsofOrigin  link
-					commonpageActions.click(driver, PointsofOrigin_Link , 360);
+		//this method is for to click any link- in this case it is clicking on PointsofOrigin  link
+		commonpageActions.click(driver, PointsofOrigin_Link , 360);
 								
-						//this method is for to read the data from excel sheet and enter data in a PointsofOrigin form MATCH HEADER NAME
-						commonpageActions.ReportPointsofOrigin(excelFilePath, sheetName, application_ID, 
-							start_date, end_date );					
+		//this method is for to read the data from excel sheet and enter data in a PointsofOrigin form 
+		commonpageActions.ReportPointsofOrigin(excelFilePath, sheetName, application_ID, start_date, end_date );					
 					
-							//this method is for to click any button in this case it is clicking on Filter button
-							commonpageActions.click(driver, filter_button , 360);
-							
-								//this method is for to click any button in this case it is clicking on Save Report button
-//								commonpageActions.click(driver, details_link , 360);
-								
-									//this method is for to click any button in this case it is clicking on Clear button
-//									commonpageActions.click(driver, clear_button , 360);
-			
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@				
-  TakeScreenShots.TakesScreenshot(filter_button);
-																	
-//											Assert.assertEquals("106220",event_ID);
-					
-				
-												System.out.println ("~~~~~~~~~~~~~~~~Reports Points of Origin_test is complete~~~~~~~~~~~~~~~~~");			
-			
-				}
+	}
 		}
+//Assert.assertEquals("VLER Direct API",application_ID);
+//this method is for to click any button in this case it is clicking on Save Report button
+//commonpageActions.click(driver, details_link , 360);

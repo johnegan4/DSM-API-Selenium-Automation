@@ -22,10 +22,8 @@ public class AdministrationManageAccounts extends LoadDriver {
 		PageFactory.initElements(driver, this);
 	}
 
-	//*[@id="accounts_link"]  
-	
-	
-	@FindBy(how = How.XPATH, using = "/html/body/div[1]/div[2]/div[1]/ul/li[4]/ul/li[3]/a")	
+	//@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administration')]")
+	@FindBy(how = How.XPATH, using = "/html/body/div[1]/div[2]/div[1]/ul/li[4]/a")	
 	private static WebElement Administration_Link;
 	
 //	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Manage Accounts')]")
@@ -36,12 +34,6 @@ public class AdministrationManageAccounts extends LoadDriver {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id=\"ui-id-1\"]")
 	private static WebElement Accounts_Link;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id=\"ui-id-2\"]")
-	private static WebElement DisabledAccounts_Link;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id=\"ui-id-3\"]")
-	private static WebElement Create_Link;		
 	
 	@FindBy(how = How.XPATH, using = "//input[@name='user_name']")
 	private static WebElement user_name;
@@ -91,6 +83,8 @@ public class AdministrationManageAccounts extends LoadDriver {
 		commonpageActions.waitForPageToLoad();
 		
 		System.out.println ("Before Admin link Click");
+		Actions actions = new Actions(driver);
+		actions.moveToElement(Administration_Link);		
 		
   		//this method is for to click any link- in this case it is clicking on Administration link
    		commonpageActions.click(driver, Administration_Link , 360);
@@ -102,23 +96,22 @@ public class AdministrationManageAccounts extends LoadDriver {
  		//this method is for to click any link- in this case it is clicking on Administration link
  		 // commonpageActions.mouseOverElement(driver, Administration_Link , 360);
 			 	
- 					
+ 		  System.out.println ("Before Manage Click");
+				//this method is for to click any link- in this case it is clicking on Manage link				
+ 		  		//actions.moveToElement(Manage_Link);	
+ 		  		//actions.click().build().perform();
+ 		  		commonpageActions.click(driver, Manage_Link , 360);
+				System.out.println ("After Manage Click");
+				
 					//this method is for to click any link- in this case it is clicking on Accounts link
-//			  		commonpageActions.click(driver, Accounts_Link , 360);
-   		
-   					//this method is for to click any link- in this case it is clicking on DisabledAccounts link
-//  				commonpageActions.click(driver, DisabledAccounts_Link , 360);
-			  		
-			  		//this method is for to click any link- in this case it is clicking on CreateAccounts link
-			  		commonpageActions.click(driver, Create_Link , 360);
+			  		commonpageActions.click(driver, Accounts_Link , 360);
 				
 				
                                //this method will read the data from excel sheet and enter data in a AdministrationManageAccounts form 
-								commonpageActions.AdministrationManageAccounts(excelFilePath, sheetName, user_name, org_id, first_name, middle_name, last_name, 
+								commonpageActions.AdminManageAccounts(excelFilePath, sheetName, user_name, org_id, first_name, middle_name, last_name, 
 										ext_mail, account_title, department, telephone, mobile, domain_select, facility_select );
 								
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@			
-  TakeScreenShots.TakesScreenshot(facility_select);
+					TakeScreenShots.TakesScreenshot(facility_select);
 //					
 				
 				System.out.println ("~~~~~~~~~~~~~~~~Administration Manage Accounts_test is complete~~~~~~~~~~~~~~~~~");			

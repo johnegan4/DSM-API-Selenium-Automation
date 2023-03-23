@@ -20,6 +20,8 @@ public class ReportGroupSummary extends LoadDriver {
 		LoadDriver.driver = driver;
 		PageFactory.initElements(driver, this);
 	}
+	
+	
 
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Reports')]")
 	private static WebElement Reports_Link;
@@ -57,7 +59,7 @@ public class ReportGroupSummary extends LoadDriver {
 		
 										
 
-	// Test Report GroupSummary form
+	// Test Report Group Summary form
 		public static void ReportGroupSummary_validation(String excelFilePath, String sheetName) throws Exception {
 			System.out.println("***************** Reports GroupSummary Test_Validation- in validation *****************");
 			Thread.sleep(200);
@@ -68,30 +70,24 @@ public class ReportGroupSummary extends LoadDriver {
 				commonpageActions.waitForPageToLoad();
 			
 					//this method is for to click any link- in this case it is clicking on reports link 
-						commonpageActions.click(driver, Reports_Link , 360);
+					commonpageActions.click(driver, Reports_Link , 360);
 	   		
-						//this method is for to click any link- in this case it is clicking on GroupSummary link
-							commonpageActions.click(driver, group_activity_summary_link , 360);
-					
-								//this method is for to read the data from excel sheet and enter data in a group summary form 
-								commonpageActions.ReportGroupSummary(excelFilePath, sheetName, whichfacility, group_status_type, text_group_name, txtDirectAddress, 
-										start_date, end_date );
-						
-									//this method is for to click any button in this case it is clicking on Filter button
-										commonpageActions.click(driver, filter_button , 360);
-										
-											//this method is for to click any button in this case it is clicking on Save Report button
-//												commonpageActions.click(driver, details_link , 360);
+					//this method is for to click any link- in this case it is clicking on GroupSummary link
+					commonpageActions.click(driver, group_activity_summary_link , 360);
 												
-													//this method is for to click any button in this case it is clicking on Clear button
-//														commonpageActions.click(driver, clear_button , 360);
-														
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@				
-  TakeScreenShots.TakesScreenshot(filter_button);
-						
-//                                   							Assert.assertEquals("106220",event_ID);
-										
+					//this method is for to read the data from excel sheet and enter data in a group summary form 
+					commonpageActions.ReportGroupSummary(excelFilePath, sheetName, whichfacility, group_status_type, text_group_name, txtDirectAddress, 
+										start_date, end_date );						
+															
 					System.out.println ("~~~~~~~~~~~~~~~~Reports Group Summary_test is complete~~~~~~~~~~~~~~~~~");			
-				
-					}
-				}
+		}
+	}
+//~~~~~~~~~~~More methods, commands...  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+//   TakeScreenShots.TakesScreenshot(filter_button);
+//
+//this method is for to click any button in this case it is clicking on Filter button
+//commonpageActions.click(driver, filter_button , 360);
+
+//this method is for to click any button in this case it is clicking on Clear button
+//commonpageActions.click(driver, clear_button , 360)			

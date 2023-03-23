@@ -1,16 +1,18 @@
 package dsm_automation.test.methods;
 
-import java.awt.Robot;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
@@ -31,21 +33,14 @@ public class commonpageActions extends LoadDriver  {
 
 	public static void click (WebDriver driver, WebElement link , int Timeouts) throws Exception {
 		waitForPageToLoad();
-	
+	System.out.println("Link ->"+link.toString());
 	new WebDriverWait(driver,Timeouts).
 	               until(ExpectedConditions.elementToBeClickable
 				(link));
 	js.executeScript("arguments[0].click()", link);
-	Thread.sleep(1000);
+	Thread.sleep(5000);
 	}
-	
-					
-	public static void dropDownSelect (WebElement element, String value) throws Exception {
-			Select rdrpdwn1 = new Select(element);
-		rdrpdwn1.selectByVisibleText(value);
 		
-	}
-	
 	@SuppressWarnings("deprecation")
 	public static void waitforelementToBeClickable (WebElement element ) throws Exception {
 		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(2000, TimeUnit.SECONDS)
@@ -59,16 +54,13 @@ public class commonpageActions extends LoadDriver  {
 				.pollingEvery(500,TimeUnit.MILLISECONDS);
 				wait.until(ExpectedConditions.titleContains(element));
 	}
-	
-	
-	
+		
 	public static void zoomInZoomOut ( ) throws Exception {
 		String  zoomLevelReduced= "50%";
 		js.executeScript("document.body.style.zoom='" + zoomLevelReduced + "'");
 		
 	}
-	
-	
+		
 	public static void waitForPageToLoad() throws InterruptedException{
 		int i=0;
 		while (i!=10) {
@@ -85,12 +77,13 @@ public class commonpageActions extends LoadDriver  {
 	
 //  MOUSE OVER
 	public static void mouseOverElement(WebElement element) throws Exception {
-
-        Actions actionProvider = new Actions(driver);
-        // Performs mouse move action onto the element
-        actionProvider.moveToElement(element).build().perform();
+		Actions builder = new Actions(driver);
+        Action mouseOverHome = builder
+                .moveToElement(element)
+                .build();
         Thread.sleep(100);
-        
+        mouseOverHome.perform();
+        Thread.sleep(5000);
 	}
 
 //  DROPDOWN SELECT
@@ -100,15 +93,26 @@ public class commonpageActions extends LoadDriver  {
                 .moveToElement(element)
                 .build();
         dropDownSelect.perform();
+        Thread.sleep(1000);
 	}
 	
 	public static void dropDownSelect(WebDriver driver, WebElement administration_Link, int i) {
 		
-	} 
+	}
+	
+
+	
+//    ~~~~~~~~~~~~~~~~~~~~~  ADDED BUTTONS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='clear_button']")
+	private static WebElement clear_button;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='filter_button']")
+	private static WebElement filter_button;
 	
 	
-//--- Events ====================================================THE START===========================================================================-
 	
+//--- Report Events ====================================================THE START===========================================================================-
 
 	public static void ReportEvents(String excelFilePath, String sheetName, WebElement successful, WebElement event_ID, 
 			WebElement action_ID, WebElement target, WebElement target_type, WebElement acting_user, WebElement acting_type, 
@@ -131,12 +135,12 @@ waitForPageToLoad();
 							if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) {
 								
 			
-	// Get Success
-								successful.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Success"));
-								waitForPageToLoad();
+	    // Get Success
+							    	successful.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Success"));
+							        waitForPageToLoad();
 								
 								
-								System.out.println("After Success");
+							        System.out.println("After Success");
 								}
 							
 	// Validate for ID
@@ -146,7 +150,7 @@ waitForPageToLoad();
 									
 		// Get ID
 									event_ID.sendKeys(DSMExcelData.get(String.valueOf(k)).get("ID"));
-										waitForPageToLoad();
+									waitForPageToLoad();
 							
 										System.out.println("After ID");
 								}
@@ -234,39 +238,55 @@ waitForPageToLoad();
 									end_date.sendKeys(DSMExcelData.get(String.valueOf(k)).get("end_date"));
 									waitForPageToLoad();
 										Thread.sleep(1000);
- TakeScreenShots.TakesScreenshot(end_date);
-							
-										System.out.println("After end_date "); } } } }
+ 				
+										System.out.println("After end_date ");
+										
+										
+										
+										commonpageActions.click(driver, filter_button , 360);
+								        
+											TakeScreenShots.TakesScreenshot(filter_button);
+  
+										commonpageActions.click(driver, clear_button , 360);		
+								
+								} } } }
 	
-//-- Facility -----------------------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	
-	public static void ReportFacility(String excelFilePath, String sheetName, WebElement which_facility, 
+//-- Report Facility -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+		
+	public static void ReportFacility(String excelFilePath, String sheetName, WebElement whichfacility, 
 			WebElement start_date, WebElement end_date) throws Exception {		
 										
-waitForPageToLoad();									
-										
-												Map<String, Map<String, String>> DSMExcelData = ReadExcelData.readExcelFile(excelFilePath, sheetName);
-												
-												System.out.println("Before excel loop");
+		waitForPageToLoad();
+		
+		
+		Map<String, Map<String, String>> DSMExcelData = ReadExcelData.readExcelFile(excelFilePath, sheetName);
+		
+		System.out.println("Before excel loop");
 
-								// Loop through the map object
-												if (DSMExcelData != null) {
-													for (int k = 1; k < DSMExcelData.size() + 1; k++) {
-													
-														System.out.println("In For loop");
-								// Execute the script only if Run Script is set to Yes
-														if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) {							
+		// Loop through the map object
+			if (DSMExcelData != null) {
+				for (int k = 1; k < DSMExcelData.size() + 1; k++) {
+			
+					System.out.println("In For loop");
+					// Execute the script only if Run Script is set to Yes
+					if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) {	
+						
+						
+						
+		// Validate for ReportFacility
+						if (DSMExcelData.get(String.valueOf(k)).get("ReportFacility") != null ) {
+							waitForPageToLoad();
+							System.out.println("ReportFacility -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("ReportFacility"));						
+						
 								
-															System.out.println("Facility ->"+DSMExcelData.get(String.valueOf(k)).get("Facility"));
-			// Get Facility
-									which_facility.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Facility"));
+			// Get ReportFacility
+									whichfacility.sendKeys(DSMExcelData.get(String.valueOf(k)).get("ReportFacility"));
 									waitForPageToLoad();
 										Thread.sleep(1000);
 							
-										System.out.println("After Facility");
+										System.out.println("After ReportFacility");
 								}
- // Validate for start_date
+		// Validate for start_date
 								if (DSMExcelData.get(String.valueOf(k)).get("start_date") != null ) {
 									waitForPageToLoad();
 									System.out.println("start_date -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("start_date"));
@@ -278,7 +298,7 @@ waitForPageToLoad();
 							
 										System.out.println("After start_date ");
 								}
- // Validate for end_date
+      // Validate for end_date
 								if (DSMExcelData.get(String.valueOf(k)).get("end_date") != null ) {
 									waitForPageToLoad();
 									System.out.println("end_date -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("end_date"));
@@ -287,15 +307,88 @@ waitForPageToLoad();
 									end_date.sendKeys(DSMExcelData.get(String.valueOf(k)).get("end_date"));
 									waitForPageToLoad();
 										Thread.sleep(1000);
- TakeScreenShots.TakesScreenshot(end_date);
-							
-										System.out.println("After end_date "); } } } }
-								
-								
-								
-//-- PointsofOrigin ---------------------------------------------------------------------------------------------------------------------------------------------------------
-								
+ 							
+										System.out.println("After end_date "); 
+										
+										
+										commonpageActions.click(driver, filter_button , 360);
+								        
+											TakeScreenShots.TakesScreenshot(filter_button);
+										
+										commonpageActions.click(driver, clear_button , 360);
+										
+								} } } } }
+	
+	//-- Report HISP -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+		public static void ReportHISP(String excelFilePath, String sheetName, WebElement HISP, 
+				WebElement start_date, WebElement end_date) throws Exception {		
+											
+			waitForPageToLoad();
+			
+			
+			Map<String, Map<String, String>> DSMExcelData = ReadExcelData.readExcelFile(excelFilePath, sheetName);
+			
+			System.out.println("Before excel loop");
 
+			// Loop through the map object
+				if (DSMExcelData != null) {
+					for (int k = 1; k < DSMExcelData.size() + 1; k++) {
+				
+						System.out.println("In For loop");
+						// Execute the script only if Run Script is set to Yes
+						if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) {	
+							
+							
+							
+			// Validate for ReportHISP
+							if (DSMExcelData.get(String.valueOf(k)).get("ReportHISP") != null ) {
+								waitForPageToLoad();
+								System.out.println("ReportHISP -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("ReportHISP"));						
+							
+									
+				// Get ReportHISP
+										HISP.sendKeys(DSMExcelData.get(String.valueOf(k)).get("ReportHISP"));
+										waitForPageToLoad();
+											Thread.sleep(1000);
+								
+											System.out.println("After ReportHISP");
+									}
+			// Validate for start_date
+									if (DSMExcelData.get(String.valueOf(k)).get("start_date") != null ) {
+										waitForPageToLoad();
+										System.out.println("start_date -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("start_date"));
+										
+				// Get start_date
+										start_date.sendKeys(DSMExcelData.get(String.valueOf(k)).get("start_date"));
+										waitForPageToLoad();
+											Thread.sleep(1000);
+								
+											System.out.println("After start_date ");
+									}
+	      // Validate for end_date
+									if (DSMExcelData.get(String.valueOf(k)).get("end_date") != null ) {
+										waitForPageToLoad();
+										System.out.println("end_date -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("end_date"));
+										
+				// Get end_date
+										end_date.sendKeys(DSMExcelData.get(String.valueOf(k)).get("end_date"));
+										waitForPageToLoad();
+											Thread.sleep(1000);
+	 							
+											System.out.println("After end_date "); 
+											
+											
+											commonpageActions.click(driver, filter_button , 360);
+									        
+												TakeScreenShots.TakesScreenshot(filter_button);
+											
+											commonpageActions.click(driver, clear_button , 360);
+											
+									} } } } }
+											
+//-- Report PointsofOrigin ---------------------------------------------------------------------------------------------------------------------------------------------------------
+		
 	public static void ReportPointsofOrigin(String excelFilePath, String sheetName, WebElement application_ID, 
 				WebElement start_date, WebElement end_date) throws Exception {		
 																	
@@ -349,43 +442,53 @@ waitForPageToLoad();
 									end_date.sendKeys(DSMExcelData.get(String.valueOf(k)).get("end_date"));
 									waitForPageToLoad();
 										Thread.sleep(1000);
- TakeScreenShots.TakesScreenshot(end_date);
 							
-										System.out.println("After end_date ");} } } } } 
-							 
+										System.out.println("After end_date ");
+										
+										
+										commonpageActions.click(driver, filter_button , 360);
+								        
+											TakeScreenShots.TakesScreenshot(filter_button);
+									
+										commonpageActions.click(driver, clear_button , 360);
+										
+								} } } } } 
+							 			
+//--- Report Group Summary ---------------------------------------------------------------------------------------------------------------------------------------------------
 	
-			
-			
-//---- Group Summary ---------------------------------------------------------------------------------------------------------------------------------------------------
-	
-
 	public static void ReportGroupSummary(String excelFilePath, String sheetName, WebElement whichfacility, WebElement group_status_type,
-			WebElement text_group_name, WebElement txtDirectAddress,  
-			WebElement start_date, WebElement end_date) throws Exception {
+			WebElement text_group_name, WebElement txtDirectAddress, WebElement start_date, WebElement end_date) throws Exception {
 		
 		
-waitForPageToLoad();
+		waitForPageToLoad();
 		
-			
-					Map<String, Map<String, String>> DSMExcelData = ReadExcelData.readExcelFile(excelFilePath, sheetName);
-					
-					System.out.println("Before excel loop");
+		
+		Map<String, Map<String, String>> DSMExcelData = ReadExcelData.readExcelFile(excelFilePath, sheetName);
+		
+		System.out.println("Before excel loop");
 
-	         // Loop through the map object
-					if (DSMExcelData != null) {
-						for (int k = 1; k < DSMExcelData.size() + 1; k++) {
-						
-							System.out.println("In For loop");
-        	// Execute the script only if Run Script is set to Yes
-							if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) {
+						// Loop through the map object
+						if (DSMExcelData != null) {
+										for (int k = 1; k < DSMExcelData.size() + 1; k++) {
+			
+												System.out.println("In For loop");
+												// Execute the script only if Run Script is set to Yes
+												if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) {
+					
 								
 			
-	// Get Facility
-								whichfacility.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Facility"));
-								waitForPageToLoad();
+		// Validate for whichfacility
+								if (DSMExcelData.get(String.valueOf(k)).get("whichfacility") != null ) {
+									waitForPageToLoad();
+									System.out.println("whichfacility -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("whichfacility"));						
 								
-								
-								System.out.println("After Facility");
+										
+		// Get whichfacility
+									whichfacility.sendKeys(DSMExcelData.get(String.valueOf(k)).get("whichfacility"));
+									waitForPageToLoad();
+									Thread.sleep(1000);
+									
+									System.out.println("After whichfacility");
 								}
 							
 	// Validate for Group Status
@@ -439,24 +542,30 @@ waitForPageToLoad();
 							
 										System.out.println("After start_date ");
 								}
-	// Validate for end_date
+ // Validate for end_date
 								if (DSMExcelData.get(String.valueOf(k)).get("end_date") != null ) {
 									waitForPageToLoad();
 									System.out.println("end_date -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("end_date"));
 									
-									// Get end_date
+			// Get end_date
 									end_date.sendKeys(DSMExcelData.get(String.valueOf(k)).get("end_date"));
 									waitForPageToLoad();
 										Thread.sleep(1000);
- TakeScreenShots.TakesScreenshot(end_date);
 							
-										System.out.println("After end_date "); } } } }
-	          			    
-//-- Requests -------------------------------------------------------------------------------------------------------------------------------------------------------------							
-
-							
+										System.out.println("After end_date ");
+										
+								
+										commonpageActions.click(driver, filter_button , 360);
+								        
+											TakeScreenShots.TakesScreenshot(filter_button);
   
-   public static void ReportRequests(String excelFilePath, String sheetName, WebElement whichapp, WebElement request_ID, 
+										commonpageActions.click(driver, clear_button , 360);
+								
+								} } } } }
+	          			    
+//--- Report Requests -------------------------------------------------------------------------------------------------------------------------------------------------------------							
+  
+    public static void ReportRequests(String excelFilePath, String sheetName, WebElement whichapp, WebElement request_ID, 
 			WebElement request_call, WebElement request_code, WebElement request_response, 
 			WebElement start_date, WebElement end_date) throws Exception {
 		
@@ -475,7 +584,7 @@ waitForPageToLoad();
 									System.out.println("In For loop");
 					// Execute the script only if Run Script is set to Yes
 									if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) {
-//												
+												
 										
 			 // Validate for whichapp
 							if (DSMExcelData.get(String.valueOf(k)).get("whichapp") != null ) {
@@ -487,45 +596,58 @@ waitForPageToLoad();
 								waitForPageToLoad();
 								Thread.sleep(1000);
 																	
-								System.out.println("After awhichapp ");
+								System.out.println("After whichapp ");
 								}
 									
 			// Validate for request_ID
-										if (DSMExcelData.get(String.valueOf(k)).get("ID") != null ) {
-											waitForPageToLoad();
-											System.out.println("ID is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("ID"));
+										if (DSMExcelData.get(String.valueOf(k)).get("request_ID") != null ) {
+											//waitForPageToLoad();
+											System.out.println("request_ID is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("request_ID"));
 											
 				// Get request_ID
-											request_ID.sendKeys(DSMExcelData.get(String.valueOf(k)).get("ID"));
+											request_ID.sendKeys(DSMExcelData.get(String.valueOf(k)).get("request_ID"));
 												waitForPageToLoad();
 									
-												System.out.println("After ID");
+												System.out.println("After request_ID");
 										}
 										
 			// Validate for request_call
-										if (DSMExcelData.get(String.valueOf(k)).get("Call") != null ) {
+										if (DSMExcelData.get(String.valueOf(k)).get("request_call") != null ) {
 											waitForPageToLoad();
-											System.out.println("Call-Inside->"+ DSMExcelData.get(String.valueOf(k)).get("Call"));
+											System.out.println("request_call -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("request_call"));
 											
 				// Get request_call
-											request_call.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Call"));
+											request_call.sendKeys(DSMExcelData.get(String.valueOf(k)).get("request_call"));
 											waitForPageToLoad();
 												Thread.sleep(1000);
 									
-												System.out.println("After Call");
+												System.out.println("After request_call");
 										}
 										
-			// Validate for request_response
-										if (DSMExcelData.get(String.valueOf(k)).get("Response Code") != null ) {
+			// Validate for request_code
+										if (DSMExcelData.get(String.valueOf(k)).get("request_code") != null ) {
 											waitForPageToLoad();
-											System.out.println("Response Code -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("Response Code"));
+											System.out.println("request_code -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("request_code"));
 											
-			     // Get request_response 
-											request_response.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Response Code"));
+			     // Get request_code 
+											request_code.sendKeys(DSMExcelData.get(String.valueOf(k)).get("request_code"));
 											waitForPageToLoad();
 												Thread.sleep(1000);
 									
-												System.out.println("After Response Code ");
+												System.out.println("After request_code ");
+										}
+																				
+			// Validate for request_response
+										if (DSMExcelData.get(String.valueOf(k)).get("request_response") != null ) {
+											waitForPageToLoad();
+											System.out.println("request_response -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("request_response_type"));
+																		
+				 // Get request_response 
+											request_response.sendKeys(DSMExcelData.get(String.valueOf(k)).get("request_response"));
+											waitForPageToLoad();
+											Thread.sleep(1000);
+																
+											System.out.println("After request_response ");
 										}
 										
 			// Validate for start_date
@@ -545,40 +667,54 @@ waitForPageToLoad();
 											waitForPageToLoad();
 											System.out.println("end_date -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("end_date"));
 											
-											// Get end_date
+		    	// Get end_date
 											end_date.sendKeys(DSMExcelData.get(String.valueOf(k)).get("end_date"));
 											waitForPageToLoad();
 												Thread.sleep(1000);
- TakeScreenShots.TakesScreenshot(end_date);
-									
-												System.out.println("After end_date "); } } } } }
-								
-								
-								
-//--- GlobalSearch -------------------------------------------------------------------------------------------------------------------------------------------------------
-								
-
-			public static void ReportGlobalSearch(String excelFilePath, String sheetName, WebElement Message_Sender, WebElement Message_Recipients, 
+												
+ 									
+												System.out.println("After end_date ");
+												
+												
+												commonpageActions.click(driver, filter_button , 360);
+										        
+													TakeScreenShots.TakesScreenshot(filter_button);
+	  
+												commonpageActions.click(driver, clear_button , 360);
+												
+										} } } } }
+																
+//--- Global Search -------------------------------------------------------------------------------------------------------------------------------------------------------
+		
+    public static void GlobalSearch(String excelFilePath, String sheetName, WebElement Message_Sender, WebElement Message_Recipients, 
 					WebElement Message_Subject, WebElement Message_Plain, WebElement Message_Attachments, WebElement Mailbox, WebElement Folder, 
 					WebElement start_date, WebElement end_date) throws Exception {
 									
 									
 waitForPageToLoad();
-									
-										
-												Map<String, Map<String, String>> DSMExcelData = ReadExcelData.readExcelFile(excelFilePath, sheetName);
-												
-												System.out.println("Before excel loop");
+				
+				
+				Map<String, Map<String, String>> DSMExcelData = ReadExcelData.readExcelFile(excelFilePath, sheetName);
+				
+				System.out.println("Before excel loop");
 
-								// Loop through the map object
-												if (DSMExcelData != null) {
-													for (int k = 1; k < DSMExcelData.size() + 1; k++) {
-													
-														System.out.println("In For loop");
-								// Execute the script only if Run Script is set to Yes
-														if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) {
-															
-										
+						// Loop through the map object
+						if (DSMExcelData != null) {
+							for (int k = 1; k < DSMExcelData.size() + 1; k++) {
+							System.out.println("In For loop");
+						
+						// Execute the script only if Run Script is set to Yes
+						if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) {
+							
+									
+							
+							// Validate for Message_Sender
+															if (DSMExcelData.get(String.valueOf(k)).get("From") != null ) {
+															waitForPageToLoad();
+															System.out.println("From -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("From"));
+																			
+							
+							
 								// Get Message_Sender
 															Message_Sender.sendKeys(DSMExcelData.get(String.valueOf(k)).get("From"));
 															waitForPageToLoad();
@@ -683,17 +819,21 @@ waitForPageToLoad();
 																end_date.sendKeys(DSMExcelData.get(String.valueOf(k)).get("end_date"));
 																waitForPageToLoad();
 																	Thread.sleep(1000);
- TakeScreenShots.TakesScreenshot(end_date);
-														
-																	System.out.println("After end_date "); } } } }
-																														
- 
-																	   
+ 														
+																	System.out.println("After end_date ");
+																	
+																	
+																	commonpageActions.click(driver, filter_button , 360);
+															        
+																		TakeScreenShots.TakesScreenshot(filter_button);
+						  
+																	commonpageActions.click(driver, clear_button , 360);
+																	
+															} } } } }
 	
-//--- Mail ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--- Report Mail ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-					public static void ReportMail(String excelFilePath, String sheetName, WebElement successful, WebElement id, 
+	public static void ReportMail(String excelFilePath, String sheetName, WebElement successful, WebElement id, 
 								WebElement mdn, WebElement bound, WebElement sender, WebElement recipient, WebElement file_size, 
 								WebElement attachment_type, WebElement protected_data, WebElement start_date, WebElement end_date) throws Exception {
 	
@@ -706,20 +846,23 @@ waitForPageToLoad();
 								System.out.println("Before excel loop");
 
 								// Loop through the map object
-									if (DSMExcelData != null) {
+							if (DSMExcelData != null) {
 										for (int k = 1; k < DSMExcelData.size() + 1; k++) {
 					
 											System.out.println("In For loop");
 								// Execute the script only if Run Script is set to Yes
-											if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) {
+							if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) {
+								
+								
+								
 							
 		
 				// Get Success
-												successful.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Success"));
-												waitForPageToLoad();
+						    	successful.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Success"));
+									waitForPageToLoad();
 							
 							
-												System.out.println("After Success");
+									System.out.println("After Success");
 							}
 						
 			// Validate for ID
@@ -841,41 +984,54 @@ waitForPageToLoad();
 								end_date.sendKeys(DSMExcelData.get(String.valueOf(k)).get("end_date"));
 								waitForPageToLoad();
 									Thread.sleep(1000);
- TakeScreenShots.TakesScreenshot(end_date);
+										 
 						
-									System.out.println("After end_date "); } } } }
+									System.out.println("After end_date ");
+									
+									
+									commonpageActions.click(driver, filter_button , 360);
+							        
+										TakeScreenShots.TakesScreenshot(filter_button);
+
+									commonpageActions.click(driver, clear_button , 360);
+									
+							} } } }
 					
-
-//--- User Summary --------------------------------------------------------------------------------------------------------------------------------------------------------
-
+//--- Report User Summary --------------------------------------------------------------------------------------------------------------------------------------------------------
     
 	public static void ReportUserSummary(String excelFilePath, String sheetName, WebElement whichfacility, WebElement txtGivenname, 
 			WebElement txtSN, WebElement txtVAEmailAddress, WebElement txtDirectAddress, WebElement txtUserName, WebElement user_status_type, 
 			WebElement start_date, WebElement end_date) throws Exception {
 		
+		 
+		waitForPageToLoad();
 		
-waitForPageToLoad();
 		
-			
-					Map<String, Map<String, String>> DSMExcelData = ReadExcelData.readExcelFile(excelFilePath, sheetName);
-					
-					System.out.println("Before excel loop");
+		Map<String, Map<String, String>> DSMExcelData = ReadExcelData.readExcelFile(excelFilePath, sheetName);
+		
+		System.out.println("Before excel loop");
 
-	// Loop through the map object
-					if (DSMExcelData != null) {
-						for (int k = 1; k < DSMExcelData.size() + 1; k++) {
-						
-							System.out.println("In For loop");
-	// Execute the script only if Run Script is set to Yes
-							if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) {
-								
+		// Loop through the map object
+			if (DSMExcelData != null) {
+				for (int k = 1; k < DSMExcelData.size() + 1; k++) {
 			
-	// Get Facility
-								whichfacility.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Facility"));
+					System.out.println("In For loop");
+					// Execute the script only if Run Script is set to Yes
+					if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) {
+								
+	
+    // Validate for whichfacility
+	  			            	if (DSMExcelData.get(String.valueOf(k)).get("whichfacility") != null ) {
+	  						    	waitForPageToLoad();
+	  									System.out.println("whichfacility  -Inside->"+DSMExcelData.get(String.valueOf(k)).get("whichfacility"));
+	  											
+								
+	  	// Get whichfacility
+								whichfacility.sendKeys(DSMExcelData.get(String.valueOf(k)).get("whichfacility"));
 								waitForPageToLoad();
 								
 								
-								System.out.println("After Facility");
+								System.out.println("After whichfacility");
 								}
 							
 	// Validate for VA Email Address
@@ -973,13 +1129,20 @@ waitForPageToLoad();
 									end_date.sendKeys(DSMExcelData.get(String.valueOf(k)).get("end_date"));
 									waitForPageToLoad();
 										Thread.sleep(1000);
- TakeScreenShots.TakesScreenshot(end_date);
-							
-										System.out.println("After end_date "); } } } }
-	
-//--- Logins----------------------------------------  TAKES 3 MIN TO LOAD after click on link   TIMEOUT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-----------------------------------------
-	
+ 							
+										System.out.println("After end_date ");
+										
+										
+										commonpageActions.click(driver, filter_button , 360);
+								        
+											TakeScreenShots.TakesScreenshot(filter_button);
 
+										commonpageActions.click(driver, clear_button , 360);
+										
+								} } } } }
+	
+//--- Report Logins----------------------------------------  TAKES 3 MIN TO LOAD after click on link   TIMEOUT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-----------------------------------------
+	
     public static void ReportLogins(String excelFilePath, String sheetName, WebElement successful, WebElement id, 
 				WebElement username, WebElement session_id, WebElement ip_address, WebElement message, WebElement org_id, 
 				WebElement start_date, WebElement end_date) throws Exception {
@@ -1082,9 +1245,9 @@ waitForPageToLoad();
 											Thread.sleep(1000);
 								
 											System.out.println("After Org ID ");
-									}
+									} 
 									
-		// Validate for start_date
+			// Validate for start_date
 									if (DSMExcelData.get(String.valueOf(k)).get("start_date") != null ) {
 										waitForPageToLoad();
 										System.out.println("start_date -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("start_date"));
@@ -1096,7 +1259,6 @@ waitForPageToLoad();
 								
 											System.out.println("After start_date ");
 									}
-									
 	   // Validate for end_date
 									if (DSMExcelData.get(String.valueOf(k)).get("end_date") != null ) {
 										waitForPageToLoad();
@@ -1106,11 +1268,19 @@ waitForPageToLoad();
 										end_date.sendKeys(DSMExcelData.get(String.valueOf(k)).get("end_date"));
 										waitForPageToLoad();
 											Thread.sleep(1000);
- TakeScreenShots.TakesScreenshot(end_date);
-								
-											System.out.println("After end_date "); } } } }
-
-  //--- UserSettingsAppList --------------------------------------------------------------------------------------------
+	 				
+											System.out.println("After end_date ");
+											
+											
+											commonpageActions.click(driver, filter_button , 360);
+									        
+												TakeScreenShots.TakesScreenshot(filter_button);
+  
+											commonpageActions.click(driver, clear_button , 360);
+											
+									} } } }
+		
+//--- User Settings AppList --------------------------------------------------------------------------------------------
 
 	public static void UserSettingsAppList(String excelFilePath, String sheetName, WebElement app_name) throws Exception {
 
@@ -1140,15 +1310,14 @@ waitForPageToLoad();
      // Get app_name
 										app_name.sendKeys(DSMExcelData.get(String.valueOf(k)).get("app_name"));
 											waitForPageToLoad();
- TakeScreenShots.TakesScreenshot(app_name);											
-																			
-											System.out.println("After app_name");  } } } }
-										
-    
-  //--- User Settings --------------------------------------------------------------------------------------------------------------------------------------------------
+ 																			
+											System.out.println("After app_name");
+											
+											} } } }
+		    
+//--- User Settings --------------------------------------------------------------------------------------------------------------------------------------------------
 	
-
-  	public static void ReportUserSettings(String excelFilePath, String sheetName, WebElement first_name, WebElement middle_name, 
+  	public static void UserSettings(String excelFilePath, String sheetName, WebElement first_name, WebElement middle_name, 
   			WebElement last_name, WebElement ext_mail, WebElement title, WebElement department, WebElement organization, WebElement telephone, WebElement mobile,
   			WebElement location, WebElement facility_select) throws Exception {
   		 
@@ -1210,7 +1379,7 @@ waitForPageToLoad();
   	// Validate for VA Email Address
   								if (DSMExcelData.get(String.valueOf(k)).get("VA Email Address") != null ) {
   									waitForPageToLoad();
-  									System.out.println("TVA Email Address  -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("TVA Email Address"));
+  									System.out.println("VA Email Address  -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("VA Email Address"));
   									
   			// Get VA Email Address
   									ext_mail.sendKeys(DSMExcelData.get(String.valueOf(k)).get("VA Email Address"));
@@ -1295,34 +1464,36 @@ waitForPageToLoad();
   									waitForPageToLoad();
   										Thread.sleep(1000);
   										
- TakeScreenShots.TakesScreenshot(location);
-  							
-  										System.out.println("After Location "); } } } } }
-  										  								
-  	
-  		// Validate for Facility
-// 		  								if (DSMExcelData.get(String.valueOf(k)).get("Facility") != null ) {
-// 		  									waitForPageToLoad();
-// 		  									System.out.println("Facility  -Inside->"+DSMExcelData.get(String.valueOf(k)).get("Facility"));
+   										System.out.println("After Location ");
+   										 
+   										
+  								
+  								}
+//  		// Validate for SettingsFacility
+// 		  						if (DSMExcelData.get(String.valueOf(k)).get("SettingsFacility") != null ) {
+// 		  							waitForPageToLoad();
+// 		  							System.out.println("SettingsFacility  -Inside->"+DSMExcelData.get(String.valueOf(k)).get("SettingsFacility"));
 //  		  									
-//  			// Get Facility
-// 		  								facility_select.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Facility"));
-// 		  										waitForPageToLoad();
-// 		  							
-//		  										System.out.println("After Facility"); 
- 
-							
-   //--- AdministrationManageAccounts --------------------------------------------------------------------------------------------
+//  			// Get SettingsFacility
+// 		  							facility_select.sendKeys(DSMExcelData.get(String.valueOf(k)).get("SettingsFacility"));
+// 		  							waitForPageToLoad();
+// 		  								Thread.sleep(1000);
+//		  										
+// 		  								System.out.println("After SettingsFacility");	    						  			 
 
-	public static void AdministrationManageAccounts(String excelFilePath, String sheetName, WebElement user_name,
+ 		  								} } } }  
+  	 
+//--- Administration Manage Accounts --------------------------------------------------------------------------------------------
+
+	public static void AdminManageAccounts(String excelFilePath, String sheetName, WebElement user_name,
 			WebElement org_id, WebElement first_name, WebElement middle_name, WebElement last_name, WebElement ext_mail,
 			WebElement account_title, WebElement department, WebElement telephone,
-			WebElement mobile, WebElement domain_select, WebElement facility_select ) throws Exception {
+			WebElement mobile, WebElement domain_select, WebElement chosen_search_input ) throws Exception {
 
 	waitForPageToLoad();
 			
-				
-						Map<String, Map<String, String>> DSMExcelData = ReadExcelData.readExcelFile(excelFilePath, sheetName);
+					
+					Map<String, Map<String, String>> DSMExcelData = ReadExcelData.readExcelFile(excelFilePath, sheetName);
 						
 						System.out.println("Before excel loop");
 
@@ -1334,10 +1505,12 @@ waitForPageToLoad();
 		// Execute the script only if Run Script is set to Yes
 								if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) {
 									
+									
+									
 				
 		   // Get user_name
-									user_name.sendKeys(DSMExcelData.get(String.valueOf(k)).get("user_name"));
-									waitForPageToLoad();
+										user_name.sendKeys(DSMExcelData.get(String.valueOf(k)).get("user_name"));
+									    waitForPageToLoad();
 									
 									
 									System.out.println("After user_name");
@@ -1350,116 +1523,110 @@ waitForPageToLoad();
 										
 			// Get org_id
 										org_id.sendKeys(DSMExcelData.get(String.valueOf(k)).get("org_id"));
-											waitForPageToLoad();
+										waitForPageToLoad();
 								
-											System.out.println("After org_id");
+										System.out.println("After org_id");
 									}
-									
-
-		  							
+											  							
 		// Validate for First Name
-								  								if (DSMExcelData.get(String.valueOf(k)).get("First Name") != null ) {
-								  									waitForPageToLoad();
-								  									System.out.println("First Name is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("First Name"));
+								  	if (DSMExcelData.get(String.valueOf(k)).get("First Name") != null ) {
+								  		waitForPageToLoad();
+								  		System.out.println("First Name is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("First Name"));
 								  									 
 			// Get First Name
-								  									first_name.sendKeys(DSMExcelData.get(String.valueOf(k)).get("First Name"));
-								  										waitForPageToLoad();
+								  		first_name.sendKeys(DSMExcelData.get(String.valueOf(k)).get("First Name"));
+								  		waitForPageToLoad();
 								  							
-								  										System.out.println("After First Name");
-								  								}
+								  		System.out.println("After First Name");
+								  	}
 								  								
         // Validate for Middle Name
-								  								if (DSMExcelData.get(String.valueOf(k)).get("Middle Name") != null ) {
-								  									waitForPageToLoad();
-								  									System.out.println("Middle Name -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("Middle Name"));
+								  	if (DSMExcelData.get(String.valueOf(k)).get("Middle Name") != null ) {
+								  		waitForPageToLoad();
+								  		System.out.println("Middle Name -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("Middle Name"));
 								  									
 			 // Get Middle Name
-								  									middle_name.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Middle Name"));
-								  									waitForPageToLoad();
-								  										Thread.sleep(1000);
+								  		middle_name.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Middle Name"));
+								  		waitForPageToLoad();
+								  										 
 								  							
-								  										System.out.println("After Middle Name");
-								  								}
+								  		System.out.println("After Middle Name");
+									}
 								  								
 		 // Validate for Last Name
-								  								if (DSMExcelData.get(String.valueOf(k)).get("Last Name") != null ) {
-								  									waitForPageToLoad();
-								  									System.out.println("Last Name -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("Last Name"));
+								 	if (DSMExcelData.get(String.valueOf(k)).get("Last Name") != null ) {
+								 		waitForPageToLoad();
+								  		System.out.println("Last Name -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("Last Name"));
 								  									
 		     // Get Last Name 
-								  									last_name.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Last Name"));
-								  									waitForPageToLoad();
-								  										Thread.sleep(1000);
-								  							
-								  										System.out.println("After Last Name ");
-								  								}
+								 		last_name.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Last Name"));
+								  		waitForPageToLoad();
+								  		Thread.sleep(1000);
+								  				
+								  		System.out.println("After Last Name ");
+									}
 								  								
 		 // Validate for VA Email Address
-								  								if (DSMExcelData.get(String.valueOf(k)).get("VA Email Address") != null ) {
-								  									waitForPageToLoad();
-								  									System.out.println("TVA Email Address  -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("TVA Email Address"));
+									if (DSMExcelData.get(String.valueOf(k)).get("VA Email Address") != null ) {
+								    	waitForPageToLoad();
+										System.out.println("TVA Email Address  -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("TVA Email Address"));
 								  									
 			 // Get VA Email Address
-								  									ext_mail.sendKeys(DSMExcelData.get(String.valueOf(k)).get("VA Email Address"));
-								  									waitForPageToLoad();
-								  										Thread.sleep(1000);
+								  		ext_mail.sendKeys(DSMExcelData.get(String.valueOf(k)).get("VA Email Address"));
+								  		waitForPageToLoad();
+								  		Thread.sleep(1000);
 								  							
-								  										System.out.println("After VA Email Address ");
-								  								}
+								  		System.out.println("After VA Email Address ");
+									}
 		 // Validate for Title
-								  								if (DSMExcelData.get(String.valueOf(k)).get("Title") != null ) {
-								  									waitForPageToLoad();
-								  									System.out.println("Title -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("Title"));
+								    if (DSMExcelData.get(String.valueOf(k)).get("Title") != null ) {
+								    	waitForPageToLoad();
+										System.out.println("Title -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("Title"));
 								  									
 			 // Get Title 
-								  									account_title.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Title"));
-								  									waitForPageToLoad();
-								  										Thread.sleep(1000);
+										account_title.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Title"));
+										waitForPageToLoad();
+										Thread.sleep(1000);
 								  							
-								  										System.out.println("After Title ");
-								  								}
+								  		System.out.println("After Title ");
+									}
 		 // Validate for Department
-								  								if (DSMExcelData.get(String.valueOf(k)).get("Department") != null ) {
-								  									waitForPageToLoad();
-								  									System.out.println("Acting Type-Inside->"+ DSMExcelData.get(String.valueOf(k)).get("Department"));
+								  	if (DSMExcelData.get(String.valueOf(k)).get("Department") != null ) {
+										waitForPageToLoad();
+								  		System.out.println("Acting Type-Inside->"+ DSMExcelData.get(String.valueOf(k)).get("Department"));
 								  									
 			 // Get Department
-								  									department.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Department"));
-								  									waitForPageToLoad();
-								  										Thread.sleep(1000);
+										department.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Department"));
+										waitForPageToLoad();
+										Thread.sleep(1000);
 								  							
-								  										System.out.println("After Department ");
-								  										
-								  								}	
-								  												
-								  										  								
+								     	System.out.println("After Department ");
+								 	}	
 		 // Validate for Telephone
-								  								if (DSMExcelData.get(String.valueOf(k)).get("Telephone") != null ) {
-								  									waitForPageToLoad();
-								  									System.out.println("Telephone  -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("Telephone"));
+								  	if (DSMExcelData.get(String.valueOf(k)).get("Telephone") != null ) {
+								 		waitForPageToLoad();
+								  		System.out.println("Telephone  -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("Telephone"));
 								  									
 			 // Get Telephone
-								  									telephone.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Telephone"));
-								  									waitForPageToLoad();
-								  										Thread.sleep(1000);
+								    	telephone.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Telephone"));
+								  		waitForPageToLoad();
+								  		Thread.sleep(1000);
 								  							
-								  										System.out.println("After Telephone ");
-								  										
-								  								}	
+								  	    System.out.println("After Telephone ");
+								    }	
 		 // Validate for Mobile
-								  								if (DSMExcelData.get(String.valueOf(k)).get("Mobile") != null ) {
-								  									waitForPageToLoad();
-								  									System.out.println("Mobile -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("Mobile"));
+									if (DSMExcelData.get(String.valueOf(k)).get("Mobile") != null ) {
+										waitForPageToLoad();
+								  		System.out.println("Mobile -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("Mobile"));
 								  									
 			 // Get Mobile
-								  									mobile.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Mobile"));
-								  									waitForPageToLoad();
-								  										Thread.sleep(1000);
-								  							
-								  										System.out.println("After Mobile ");
+								  		mobile.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Mobile"));
+								 		waitForPageToLoad();
+								  		Thread.sleep(1000);
+								  				
+								  		System.out.println("After Mobile ");
 								  										
-								                                }	
+								    }	
 		// Validate for Domain
 									if (DSMExcelData.get(String.valueOf(k)).get("Domain") != null ) {
 										waitForPageToLoad();
@@ -1468,29 +1635,34 @@ waitForPageToLoad();
 				// Get Domain
 										domain_select.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Domain"));
 										waitForPageToLoad();
-											Thread.sleep(1000);
- TakeScreenShots.TakesScreenshot(domain_select);
-																			
- 
-											System.out.println("After Domain "); 	} } } }
-							                                 
+										Thread.sleep(1000);
+  
+										System.out.println("After Domain ");
+									}
 									
-//		// Validate for Facility
-//		  								if (DSMExcelData.get(String.valueOf(k)).get("Facility") != null ) {
-//		  									waitForPageToLoad();
-//		  									System.out.println("Facility  -Inside->"+DSMExcelData.get(String.valueOf(k)).get("Facility"));
-//		  									
-//		  		// Get Facility
-//		  								facility_select.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Facility"));
-//		  										waitForPageToLoad();
-//		  							
-//		  										System.out.println("After Facility");
-//		  										
-//																		
-//							
-//--- AdminApplicationRequest --------------------------------------------------------------------------------------------
+								//  this method is for to click any link- in this case it is clicking on Facility dropdown link
+								  	commonpageActions.click(driver, chosen_search_input , 360);
+									Select select = new Select(chosen_search_input);
+									select.selectByIndex(01);
 
-							public static void AdminApplicationRequests(String excelFilePath, String sheetName, WebElement approved_table_filter) throws Exception {
+								  	
+		// Validate for AccountFacility
+		  							if (DSMExcelData.get(String.valueOf(k)).get("AccountFacility") != null ) {
+		  								waitForPageToLoad();
+		  								System.out.println("AccountFacility -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("AccountFacility"));
+		  									
+		  		// Get AccountFacility
+		  								chosen_search_input.sendKeys(DSMExcelData.get(String.valueOf(k)).get("AccountFacility"));
+		  								waitForPageToLoad();
+		  								Thread.sleep(1000);		
+		  								 
+		  								System.out.println("After AccountFacility");
+		  								
+		  							} } } } 
+		  																				
+//--- Administration Application Request --------------------------------------------------------------------------------------------
+
+	public static void AdminApplicationRequests(String excelFilePath, String sheetName, WebElement approved_table_filter) throws Exception {
 
 							waitForPageToLoad();
 									
@@ -1518,11 +1690,10 @@ waitForPageToLoad();
 						// Get approved_table_filter
 																approved_table_filter.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Search"));
 																	waitForPageToLoad();
- TakeScreenShots.TakesScreenshot(approved_table_filter);
-														
+ 														
 																	System.out.println("After Search");  } } } }
 																														
-//--- AdminAccountRequest --------------------------------------------------------------------------------------------
+//--- Administration Account Request --------------------------------------------------------------------------------------------
 
     public static void AdminAccountRequests(String excelFilePath, String sheetName, WebElement active_account_table_filter) throws Exception {
 
@@ -1552,13 +1723,14 @@ waitForPageToLoad();
 						 // Get active_account_table_filter
 																		active_account_table_filter.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Search"));
 																			waitForPageToLoad();
- TakeScreenShots.TakesScreenshot(active_account_table_filter);
 																				
 																				System.out.println("After Search"); } } } } 
 
-//--- AdminManageFacilities--------------------------------------------------------------------------------------------
+//--- Administration Manage Facilities--------------------------------------------------------------------------------------------
 
-    public static void AdminManageFacilities(String excelFilePath, String sheetName, WebElement fac_name) throws Exception {
+    public static void AdminManageFacilities(String excelFilePath, String sheetName, WebElement fac_name, 
+    		WebElement address_Line1, WebElement address_Line2, WebElement city_field, WebElement state_field,
+    		WebElement zip_field, WebElement country_field, WebElement npi_field ) throws Exception {
 
     	waitForPageToLoad();
 								
@@ -1576,25 +1748,109 @@ waitForPageToLoad();
 						if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) {
 														
 														
-													}
+													
 														
 	// Validate for Facility Name
+							     
 								if (DSMExcelData.get(String.valueOf(k)).get("fac_name") != null ) {
-										waitForPageToLoad();
+										    waitForPageToLoad();
 											System.out.println("fac_name is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("fac_name"));
 															
-		 // Facility Name
+		 // Get Facility Name
 											fac_name.sendKeys(DSMExcelData.get(String.valueOf(k)).get("fac_name"));
-												waitForPageToLoad();
- TakeScreenShots.TakesScreenshot(fac_name);
+											waitForPageToLoad();
+ 													
+											System.out.println("After fac_name"); 
+							
+								}
+	// Validate for address_Line1
+								
+								if (DSMExcelData.get(String.valueOf(k)).get("address_Line1") != null ) {
+									    	waitForPageToLoad();
+											System.out.println("address_Line1 is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("address_Line1"));
+																				
+		 // Get address_Line1
+										 	address_Line1.sendKeys(DSMExcelData.get(String.valueOf(k)).get("address_Line1"));
+											waitForPageToLoad();
+					 													
+											System.out.println("After address_Line1"); 												
 													
-													System.out.println("After fac_name"); } } } } 
+								}
+	// Validate for address_Line2
+								if (DSMExcelData.get(String.valueOf(k)).get("address_Line2") != null ) {
+									    	waitForPageToLoad();
+											System.out.println("address_Line2 is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("address_Line2"));
+																									
+	     // Get address_Line2
+											address_Line2.sendKeys(DSMExcelData.get(String.valueOf(k)).get("address_Line2"));
+											waitForPageToLoad();
+										 													
+										    System.out.println("After address_Line2");									
+													
+								}					
+	// Validate for city_field
+								if (DSMExcelData.get(String.valueOf(k)).get("city_field") != null ) {
+										    waitForPageToLoad();
+											System.out.println("city_field is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("city_field"));
+																														
+	     // Get city_field
+											city_field.sendKeys(DSMExcelData.get(String.valueOf(k)).get("city_field"));
+											waitForPageToLoad();
+															 													
+											System.out.println("After city_field");																	
+								}					
+	// Validate for state_field
+								if (DSMExcelData.get(String.valueOf(k)).get("state_field") != null ) {
+										    waitForPageToLoad();
+											System.out.println("state_field is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("state_field"));
+																																			
+	      // Get state_field
+											state_field.sendKeys(DSMExcelData.get(String.valueOf(k)).get("state_field"));
+										  	waitForPageToLoad();
+																				 													
+											System.out.println("After state_field");																	
+								}																							
+	// Validate for zip_field
+								if (DSMExcelData.get(String.valueOf(k)).get("zip_field") != null ) {
+									    	waitForPageToLoad();
+											System.out.println("zip_field is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("zip_field"));
+																																													
+	      // Get zip_field
+											zip_field.sendKeys(DSMExcelData.get(String.valueOf(k)).get("zip_field"));
+									    	waitForPageToLoad();
+																														 													
+											System.out.println("After zip_field");												
+								}										
+	// Validate for country_field
+								if (DSMExcelData.get(String.valueOf(k)).get("country_field") != null ) {
+											waitForPageToLoad();
+											System.out.println("country_field is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("country_field"));
+																																															
+         // Get country_field
+											country_field.sendKeys(DSMExcelData.get(String.valueOf(k)).get("country_field"));
+											waitForPageToLoad();
+																																	 													
+											System.out.println("After country_field");												
+								}												
+	// Validate for npi_field
+								if (DSMExcelData.get(String.valueOf(k)).get("npi_field") != null ) {
+											waitForPageToLoad();
+											System.out.println("npi_field is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("npi_field"));
+																																																		
+	     // Get npi_field
+											npi_field.sendKeys(DSMExcelData.get(String.valueOf(k)).get("npi_field"));
+										   	waitForPageToLoad();
+																																				 													
+											System.out.println("After npi_field");												
+				
+	} } } } } 
 
-
-//--- AdminManageGroups --------------------------------------------------------------------------------------------
+//--- Administration Manage Groups --------------------------------------------------------------------------------------------
 
 	public static void AdminManageGroups(String excelFilePath, String sheetName, WebElement Group_Name,
-			WebElement Domain, WebElement Display_Name, WebElement Description, WebElement Facility ) throws Exception {
+			WebElement Domain, WebElement Display_Name, WebElement Description,  
+			WebElement address_Line1, WebElement address_Line2, WebElement city_field, WebElement state_field,
+    		WebElement zip_field, WebElement country_field, WebElement facility_field ) throws Exception {
 
 	waitForPageToLoad();
 			
@@ -1622,58 +1878,126 @@ waitForPageToLoad();
 								
 		// Validate for Domain
 									if (DSMExcelData.get(String.valueOf(k)).get("Domain") != null ) {
-										waitForPageToLoad();
-										System.out.println("Domain is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("Domain"));
+									waitForPageToLoad();
+									System.out.println("Domain is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("Domain"));
 										
 			// Get Domain
-										Domain.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Domain"));
-											waitForPageToLoad();
+									Domain.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Domain"));
+									waitForPageToLoad();
 								
-											System.out.println("After Domain");
+									System.out.println("After Domain");
 									}
 									
 		  							
 		// Validate for Display_Name
 									if (DSMExcelData.get(String.valueOf(k)).get("Display_Name") != null ) {
-					  					waitForPageToLoad();
-					     				System.out.println("Display_Name is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("Display_Name"));
+					  				waitForPageToLoad();
+					     			System.out.println("Display_Name is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("Display_Name"));
 								  									 
 			// Get Display_Name
-										Display_Name.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Display_Name"));
-										waitForPageToLoad();
+									Display_Name.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Display_Name"));
+									waitForPageToLoad();
 									
-								  										System.out.println("After Display_Name");
+								  	System.out.println("After Display_Name");
 									}
 								  								
       // Validate for Description
 								  	if (DSMExcelData.get(String.valueOf(k)).get("Description") != null ) {
-										waitForPageToLoad();
-										System.out.println("Description -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("Description"));
+									waitForPageToLoad();
+									System.out.println("Description -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("Description"));
 								  									
 			 // Get Description
-										Description.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Description"));
-										waitForPageToLoad();
-										Thread.sleep(1000);
- TakeScreenShots.TakesScreenshot(Description);
-								  							
-								  										System.out.println("After Description"); } } } } 
+									Description.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Description"));
+									waitForPageToLoad();
+									  								  							
+								  	System.out.println("After Description");
+								  	}
 									
-//		// Validate for Facility
-//		  								if (DSMExcelData.get(String.valueOf(k)).get("Facility") != null ) {
-//		  									waitForPageToLoad();
-//		  									System.out.println("Facility  -Inside->"+DSMExcelData.get(String.valueOf(k)).get("Facility"));
-//		  									
-//		  		// Get Facility
-//		  								Facility.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Facility"));
-//		  										waitForPageToLoad();
-//		  							
-//		  										System.out.println("After Facility");
-//		  										
+	  // Validate for address_Line1
+									
+									if (DSMExcelData.get(String.valueOf(k)).get("address_Line1") != null ) {
+										    	waitForPageToLoad();
+												System.out.println("address_Line1 is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("address_Line1"));
+																					
+			 // Get address_Line1
+											 	address_Line1.sendKeys(DSMExcelData.get(String.valueOf(k)).get("address_Line1"));
+												waitForPageToLoad();
+						 													
+												System.out.println("After address_Line1"); 												
+														
+									}
+	  // Validate for address_Line2
+									if (DSMExcelData.get(String.valueOf(k)).get("address_Line2") != null ) {
+										    	waitForPageToLoad();
+												System.out.println("address_Line2 is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("address_Line2"));
+																										
+		     // Get address_Line2
+												address_Line2.sendKeys(DSMExcelData.get(String.valueOf(k)).get("address_Line2"));
+												waitForPageToLoad();
+											 													
+											    System.out.println("After address_Line2");									
+														
+									}					
+		// Validate for city_field
+									if (DSMExcelData.get(String.valueOf(k)).get("city_field") != null ) {
+											    waitForPageToLoad();
+												System.out.println("city_field is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("city_field"));
+																															
+		     // Get city_field
+												city_field.sendKeys(DSMExcelData.get(String.valueOf(k)).get("city_field"));
+												waitForPageToLoad();
+																 													
+												System.out.println("After city_field");																	
+									}					
+		// Validate for state_field
+									if (DSMExcelData.get(String.valueOf(k)).get("state_field") != null ) {
+											    waitForPageToLoad();
+												System.out.println("state_field is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("state_field"));
+																																				
+		      // Get state_field
+												state_field.sendKeys(DSMExcelData.get(String.valueOf(k)).get("state_field"));
+											  	waitForPageToLoad();
+																					 													
+												System.out.println("After state_field");																	
+									}																							
+		// Validate for zip_field
+									if (DSMExcelData.get(String.valueOf(k)).get("zip_field") != null ) {
+										    	waitForPageToLoad();
+												System.out.println("zip_field is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("zip_field"));
+																																														
+		      // Get zip_field
+												zip_field.sendKeys(DSMExcelData.get(String.valueOf(k)).get("zip_field"));
+										    	waitForPageToLoad();
+																															 													
+												System.out.println("After zip_field");												
+									}										
+		// Validate for country_field
+									if (DSMExcelData.get(String.valueOf(k)).get("country_field") != null ) {
+												waitForPageToLoad();
+												System.out.println("country_field is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("country_field"));
+																																																
+	         // Get country_field
+												country_field.sendKeys(DSMExcelData.get(String.valueOf(k)).get("country_field"));
+												waitForPageToLoad();
+																																		 													
+												System.out.println("After country_field");												
 
-//							
+		// Validate for facility_field
+					  							if (DSMExcelData.get(String.valueOf(k)).get("facility_field") != null ) {
+					  							waitForPageToLoad();
+					  							System.out.println("facility_field  -Inside->"+ DSMExcelData.get(String.valueOf(k)).get("facility_field"));
+					  									
+	  	    // Get facility_field
+					  							facility_field.sendKeys(DSMExcelData.get(String.valueOf(k)).get("facility_field"));
+					  							waitForPageToLoad();
+					  							
+					  							System.out.println("After facility_field");
+
+		} } } } }
+		  														
 //--- Applications --------------------------------------------------------------------------------------------
 
-    public static void Applications(String excelFilePath, String sheetName, WebElement active_application_table_filter) throws Exception {
+    public static void Applications(String excelFilePath, String sheetName ) throws Exception {
 
     	waitForPageToLoad();
 								
@@ -1688,30 +2012,9 @@ waitForPageToLoad();
 												
 									System.out.println("In For loop");
 		// Execute the script only if Run Script is set to Yes
-									if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) {  } } } 
-    
- 
-	   // Validate for active_application_table_filter
-//									if (DSMExcelData.get(String.valueOf(k)).get("Search") != null ) {
-//										waitForPageToLoad();
-//										System.out.println("Search is -Inside->"+DSMExcelData.get(String.valueOf(k)).get("Search"));
-//								
-			// Get active_application_table_filter
-//										active_application_table_filter.sendKeys(DSMExcelData.get(String.valueOf(k)).get("Search"));
-										waitForPageToLoad();
-										
-TakeScreenShots.TakesScreenshot(active_application_table_filter);
-						
-								System.out.println("After Search"); }    
-    
-    
- 
-
-
-
-
+									if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) { } } } }
+        
 //--- Onboarding Request -------------------------------------------------------------------------------------
-
 
 	public static void OnboardingRequest(String excelFilePath, String sheetName, WebElement app_name, WebElement app_url, 
 			WebElement app_desc, WebElement app_just, WebElement app_poc_name, WebElement app_poc_email, WebElement app_poc_phone ) throws Exception {
@@ -1811,17 +2114,12 @@ waitForPageToLoad();
 									app_poc_phone.sendKeys(DSMExcelData.get(String.valueOf(k)).get("POC Phone"));
 									waitForPageToLoad();
 										Thread.sleep(1000);
- TakeScreenShots.TakesScreenshot(app_poc_phone);
 																	
-										System.out.println("After POC Phone "); } } } } }
+										System.out.println("After POC Phone "); } } } } 
 	
-/*	
-	
-//  DO I NEED THIS BELOW.  NO DATA NEEDED?????????????????????????????????????????????????????????	
+//--- Onboarding Documentation --------------------------------------------------------------------------------------------
 
-//--- OnboardingDocumentation --------------------------------------------------------------------------------------------
-
-public static void OnboardingDocumentation(String excelFilePath, String sheetName ) throws Exception {
+	public static void OnboardingDocumentation(String excelFilePath, String sheetName ) throws Exception {
 
 waitForPageToLoad();
 							
@@ -1837,10 +2135,29 @@ waitForPageToLoad();
 								System.out.println("In For loop");
 	// Execute the script only if Run Script is set to Yes
 					if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) {  } } } } 
+	
+//--- Onboarding PDF --------------------------------------------------------------------------------------------
 
-//--- OnboardingPDF --------------------------------------------------------------------------------------------
+	public static void OnboardingPDF(String excelFilePath, String sheetName ) throws Exception {
 
-public static void OnboardingPDF(String excelFilePath, String sheetName ) throws Exception {
+		waitForPageToLoad();
+									
+										
+						Map<String, Map<String, String>> DSMExcelData = ReadExcelData.readExcelFile(excelFilePath, sheetName);
+												
+						System.out.println("Before excel loop");
+
+			// Loop through the map object
+							if (DSMExcelData != null) {
+								for (int k = 1; k < DSMExcelData.size() + 1; k++) {
+													
+										System.out.println("In For loop");
+			// Execute the script only if Run Script is set to Yes
+							if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) {  } } } } 
+						
+//--- Ad-hoc Report --------------------------------------------------------------------------------------------
+
+	public static void ReportAdHoc(String excelFilePath, String sheetName ) throws Exception {
 
 waitForPageToLoad();
 							
@@ -1855,7 +2172,7 @@ waitForPageToLoad();
 											
 								System.out.println("In For loop");
 	// Execute the script only if Run Script is set to Yes
-					if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) {  } } } } }
-					
-*/
+					if (DSMExcelData.get(String.valueOf(k)).get("Run Script").equals("Yes")) {  } } } }
+		
+	} 
 

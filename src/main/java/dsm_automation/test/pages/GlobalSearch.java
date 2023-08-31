@@ -41,8 +41,8 @@ public class GlobalSearch extends LoadDriver {
 	@FindBy(how = How.XPATH, using = "//*[@id='message_attachments']")
 	private static WebElement Message_Attachments;
 
-	@FindBy(how = How.XPATH, using = "//select[@id='mailbox']")
-	private static WebElement Mailbox;
+	@FindBy(how = How.XPATH, using = "//*[@id='mbxDropdown']")
+	private static WebElement mbxDropdown;
 
 	@FindBy(how = How.XPATH, using = "//select[@id='folder']")
 	private static WebElement Folder;
@@ -74,7 +74,7 @@ public class GlobalSearch extends LoadDriver {
 											
 				//this method is for to read the data from excel sheet and enter data in a Global Search form 
 				commonpageActions.GlobalSearch(excelFilePath, sheetName,
-						Message_Sender, Message_Recipients, Message_Subject, Message_Plain, Message_Attachments, Mailbox, Folder, start_date, end_date );
+						Message_Sender, Message_Recipients, Message_Subject, Message_Plain, Message_Attachments, mbxDropdown, Folder, start_date, end_date );
 										
 				System.out.println ("~~~~~~~~~~~~~~~~Reports Global Search_test is complete~~~~~~~~~~~~~~~~~");			
 	   }

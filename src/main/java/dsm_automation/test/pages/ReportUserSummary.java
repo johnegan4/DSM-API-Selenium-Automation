@@ -1,6 +1,7 @@
 package dsm_automation.test.pages;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -26,7 +27,7 @@ public class ReportUserSummary extends LoadDriver {
 	private static WebElement Reports_Link;
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'User Summary')]")
-	private static WebElement User_Summary_Link;
+	public static WebElement User_Summary_Link;
 	
 //	@FindBy(how = How.XPATH, using = "//*[@id=\"tabs\"]/ul/ul/li[5]/a")
 //	private static WebElement user_activity_summary_Link;
@@ -86,6 +87,10 @@ public class ReportUserSummary extends LoadDriver {
 					//this method is for to read the data from excel sheet and enter data in a User Summary form 
 					commonpageActions.ReportUserSummary(excelFilePath, sheetName, whichfacility, txtGivenname, txtSN, 
 					txtVAEmailAddress, txtDirectAddress, txtUserName, user_status_type, start_date, end_date );
+
+			new commonpageActions.Assert(driver, User_Summary_Link , 360);
+
+
 					
 					System.out.println ("~~~~~~~~~~~~~~~~Reports UserSummary_test is complete~~~~~~~~~~~~~~~~~");			
 	}

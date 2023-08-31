@@ -60,20 +60,21 @@ public class AdminManageFacilities extends LoadDriver {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id=\"npi-field\"]")
 	private static WebElement npi_field;
-		
- 
-	
-	@FindBy(how = How.XPATH, using = "//*[@id=\"create\"]/form/div[2]/input")
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"visn-field\"]")
+	private static WebElement VISN_field;
+
+
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"create\"]/button")
 	private static WebElement Submit;
+
+	//*[@id="create"]/button
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='active']")
 	private static WebElement active;	
 	
-	//*[@id="city-field"]
-	//*[@id="create"]/button
-	//*[@id="create"]/button
-	//*[@id="createFacilityForm"]
-	//*[@id="createFacilityForm"]
+
 	
 	// Test AdminManageFacilities form
 	public static void AdminManageFacilities_validation(String excelFilePath, String sheetName) throws Exception {
@@ -95,10 +96,8 @@ public class AdminManageFacilities extends LoadDriver {
 			    			  						
                                //this method will read the data from excel sheet and enter data in a AdminManageFacilities form 
 								commonpageActions.AdminManageFacilities(excelFilePath, sheetName, fac_name, address_line1, address_line2, 
-										city_field, state_field, zip_field, country_field, npi_field );
-								
-								//this method is for to click any link- in this case it is clicking on Active Button
-	//				  			commonpageActions.click(driver, active , 360);
+										city_field, state_field, zip_field, country_field, npi_field, VISN_field);
+
 								
 								//this method is for to click any link- in this case it is clicking on Submit link
 					  			commonpageActions.click(driver, Submit , 360);

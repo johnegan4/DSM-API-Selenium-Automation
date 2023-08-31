@@ -98,7 +98,8 @@ import dsm_automation.test.util.ReadExcelData;
                                                
                                     // Test Report_Mail
                                     ReportMail.ReportMail_validation(excelFilePath, "Report_Mail");
-     } 
+     }
+
      @Test //Report_GroupSummary
       public void TestCase06_ReportGroupSummary() throws Exception {
                   System.out.println("ReportGroupSummary _Test_Validation");
@@ -109,11 +110,11 @@ import dsm_automation.test.util.ReadExcelData;
      } 
 	 @Test //Report_Facility 
 	  public void TestCase07_ReportFacility() throws Exception {
-                  System.out.println("ReportFacility _Test_Validation       TEST FOR MULTI ROWS   FACILITY1 TAB");
+                  System.out.println("ReportFacility _Test_Validation       TEST FOR MULTI ROWS   FACILITY TAB");
                                     PageFactory.initElements(driver, ReportFacility.class);
                   
                                     // Test Report_Facility 
-	                                ReportFacility.ReportFacility_validation(excelFilePath, "Report_Facility1");
+	                                ReportFacility.ReportFacility_validation(excelFilePath, "Report_Facility");
      }
 	 @Test //Report_HISP    
 	  public void TestCase20_ReportHISP() throws Exception {
@@ -265,4 +266,11 @@ import dsm_automation.test.util.ReadExcelData;
 //                                    // Test Applications
 //                                    Applications.Applications_validation(excelFilePath, "Applications");
 //     }
- 
+//@Test //Report_UserSummary
+//public void TestCase05_ReportUserSummary() throws Exception {
+//    System.out.println("ReportUserSummary _Test_Validation");
+//    PageFactory.initElements(driver, ReportUserSummary.class);
+//
+//    // Test Report_UserSummary
+//    ReportUserSummary.ReportUserSummary_validation(excelFilePath, "Report_UserSummary");
+//}
